@@ -1,0 +1,114 @@
+<template>
+    <div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="table1">
+                <div class="form-group">
+                       <label>Customer</label>
+                       <input type="text" name="customer" placeholder="" class="form-control" >
+                       </div>
+<table class="table table-bordered">
+            
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Unit</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Rpha11</th>
+      <td>2</td>
+      <td>20000</td>
+      <td>40000</td>
+    </tr>
+    <tr>
+      <th scope="row">AVG K3</th>
+      <td>1</td>
+      <td>25000</td>
+      <td>25000</td>
+    </tr>
+  </tbody>
+</table>
+            </div>
+            </div>
+            <div class="col-md-2">
+                <div class="button2">
+            <button v-for="(item, index) in categories" :key="index" class="btn btn-primary w-75 my-1">{{item.name}}</button>
+                </div>    
+            </div>
+            <div class="col-md-6">
+            <div class="gallery">
+  <a target="_blank" href="1.jpg">
+    <img src='img/1.jpg' alt="Cinque Terre" width="400" height="400">
+  </a>
+</div>
+
+<div class="gallery">
+  <a target="_blank" href="2.jpg">
+    <img src='img/2.jpg' alt="Forest" width="400" height="400">
+  </a>
+</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    </div>
+</template>
+
+<script>
+    export default {
+      data() {
+        return {
+          categories: []
+        }
+      },
+        mounted() {
+            console.log('Component mounted.')
+        },
+        created()  {
+          this.getCategory()
+        },
+        methods: {
+          getCategory() {
+            axios.get('api/category')
+            .then(response => {
+              this.categories = response.data.data
+            })
+            .catch(error => {
+              console.log(error)
+            })
+          }
+        }
+    }
+</script>
+
+<style scoped>
+        div.gallery {
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  width: 150px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+}
+
+div.desc {
+  padding: 15px;
+  text-align: center;
+}
+    
+</style>
