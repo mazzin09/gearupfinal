@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\SubCategory;
+use App\Subcategory;
 use App\Http\Resources\SubCategoryResource;
 use App\Http\Controllers\Controller;
 
@@ -16,7 +16,7 @@ class SubCategoryController extends Controller
      */
     public function index($category_id)
     {
-        $subcategories = SubCategory::where('category_id',$category_id)->get();
+        $subcategories = Subcategory::where('category_id', $category_id)->get();
         return SubCategoryResource::collection($subcategories);
     }
 

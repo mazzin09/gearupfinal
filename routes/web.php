@@ -16,7 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/pos', function () {
-    return view('pos.index');
+    return view('POS.index');
+});
+
+Route::get('/ankit', function () {
+    return "ankit push works";
 });
 
 

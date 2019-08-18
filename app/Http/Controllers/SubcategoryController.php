@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\SubCategory;
+use App\Subcategory;
 use App\Category;
 use App\Item;
 
@@ -43,9 +43,9 @@ class SubcategoryController extends Controller
             'name' => 'required',
         ]);
 
-       
+
         $subcategory = new Subcategory;
-      
+
         $subcategory->category_id = $request->input('category_id');
         $subcategory->name = $request->input('name');
         $subcategory->save();
@@ -92,7 +92,7 @@ class SubcategoryController extends Controller
         ]);
 
         $subcategory = Subcategory::find($id);
-        
+
         $subcategory->category_id = $request->input('category_id');
         $subcategory->name = $request->input('name');
         $subcategory->save();
@@ -110,15 +110,16 @@ class SubcategoryController extends Controller
         $subcategory->delete();
     }
 
-    public function getChildCategory($id) {
+    public function getChildCategory($id)
+    {
         $sub = SubCategory::where('category_id', $id)->get();
         return $sub;
     }
 
-    public function getItem($cat, $child) {
-        $item = Item::where('category_id',$cat)
-        ->where('subcategory_id', $child)->get();
+    public function getItem($cat, $child)
+    {
+        $item = Item::where('category_id', $cat)
+            ->where('subcategory_id', $child)->get();
         return $item;
-
     }
 }
