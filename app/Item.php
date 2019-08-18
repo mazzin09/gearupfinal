@@ -19,6 +19,6 @@ class Item extends Model
     }
 
     public function temppos(){
-        return $this->hasMany('App\Temppos');
+        return $this->belongsTo('App\Temppos');
     }
 }

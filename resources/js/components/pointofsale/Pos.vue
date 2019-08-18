@@ -2,9 +2,12 @@
 <div>
   <div class="row">
     <div class="col-md-4">
-      <div class="pos-secti">
-        <table class="table table-bordered">
-            
+      <div class="pos-section">
+        <div class="form-group">
+            <label>Customer</label>
+            <input type="text" name="customer" class="form-control" >
+        </div>  
+        <table class="table table-bordered">  
   <thead>
     <tr>
       <th scope="col">Name</th>
@@ -16,12 +19,17 @@
   <tbody>
     <tr v-for="(data, index) in pos" :key="index">
       <th scope="row">{{data.item}}</th>
-      <td><input type="text"></td>
+      <td><input type="number" @change="calculatePrice(data.unitprice)" v-model="qty"></td>
       <td>{{data.unitprice}}</td>
-      <td>{{data.totalprice}}</td>
+      <td>{{totalPrice}}</td>
     </tr>
   </tbody>
 </table>
+
+ <div class="form-group">
+ <input type="Button" name="submit" class="btn btn-primary" value="Checkout" >
+</div>
+
       </div>
     </div>
     <div class="col-md-8">
@@ -38,12 +46,16 @@
           </div>
         </div>
         <div class="col-md-8">
-          <div class="card" v-for="(item, index) in products" :key="index">
-            <img src="img/1.jpg" alt="" class="card-img-top" @click="setpos(item)">
-            <div class="card-body">
-              <h5 class="card-title">{{item.name}}</h5>
-            </div>
-          </div>
+         <div class="row">
+           <div class="col-md-4"  v-for="(item, index) in products" :key="index">
+              <div class="card">
+                <img :src="'/storage/cover_images/'+item.cover" alt="" class="card-img-top" @click="setpos(item)">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.name}}</h5>
+                </div>
+              </div>
+           </div>
+         </div>
           
         </div>
       </div>
@@ -59,7 +71,9 @@
           categories: [],
           subcategories: [],
           products: [],
-          pos: []
+          pos: [],
+          totalPrice: 0,
+          qty: 1
 
         }
       },
@@ -106,8 +120,7 @@
                category : product.category_id,
                subcategory : product.subcategory_id,
                item : product.id,
-               unitprice :900,
-               totalprice : 900
+               unitprice :product.price,
             })
             .then(response => {
               console.log(response);
@@ -124,12 +137,30 @@
             .catch(error => {
               console.log(error)
             })
-          }
+          },
+          calculatePrice(price){
+            this.totalPrice = this.qty * price;
+            return totalPrice
+          },
+          //checkout
+          setData(){
+             axios.post('api/temppos',{
+               category : product.category_id,
+               subcategory : product.subcategory_id,
+               item : product.id,
+               customer : product.id,
+               unitprice :product.price,
+               totalprice : 900,
+          })
         }
+      }
     }
-</script>
+    </script>
 
 <style scoped>
+input {
+  width: 50px;
+}
         div.gallery {
   margin: 5px;
   border: 1px solid #ccc;

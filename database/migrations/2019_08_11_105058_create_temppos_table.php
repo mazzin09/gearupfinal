@@ -19,7 +19,6 @@ class CreateTempposTable extends Migration
             $table->string('subcategory');
             $table->string('item');
             $table->string('unitprice');
-            $table->string('totalprice');
             $table->timestamps();
         });
     }

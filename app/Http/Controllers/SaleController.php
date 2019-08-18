@@ -40,6 +40,7 @@ class SaleController extends Controller
             'category' => 'required',
             'subcategory' => 'required',
             'item' => 'required',
+            'customer' => 'required',
             'quantity' => 'required',
             'unitprice' => 'required',
             'totalprice' => 'required'
@@ -51,6 +52,7 @@ class SaleController extends Controller
         $sale->category = $request->input('category');
         $sale->subcategory = $request->input('subcategory');
         $sale->item = $request->input('item');
+        $sale->customer = $request->input('customer');
         $sale->quantity = $request->input('quantity');
         $sale->unitprice = $request->input('unitprice');
         $sale->totalprice = $request->input('totalprice');
@@ -96,6 +98,7 @@ class SaleController extends Controller
             'category' => 'required',
             'subcategory' => 'required',
             'item' => 'required',
+            'customer' => 'required',
             'quantity' => 'required',
             'unitprice' => 'required',
             'totalprice' => 'required'
@@ -106,6 +109,7 @@ class SaleController extends Controller
         $sale->category = $request->input('category');
         $sale->subcategory = $request->input('subcategory');
         $sale->item = $request->input('item');
+        $sale->customer = $request->input('customer');
         $sale->quantity = $request->input('quantity');
         $sale->unitprice = $request->input('unitprice');
         $sale->totalprice = $request->input('totalprice');

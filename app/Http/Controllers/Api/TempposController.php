@@ -43,7 +43,6 @@ class TempposController extends Controller
         $temppos->subcategory = $request->input('subcategory');
         $temppos->item = $request->input('item');
         $temppos->unitprice = $request->input('unitprice');
-        $temppos->totalprice = $request->input('totalprice');
         $temppos->save();
 
         return new TempposResource($temppos);        

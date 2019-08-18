@@ -1892,13 +1892,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       categories: [],
       subcategories: [],
       products: [],
-      pos: []
+      pos: [],
+      totalPrice: 0,
+      qty: 1
     };
   },
   mounted: function mounted() {
@@ -1944,8 +1958,7 @@ __webpack_require__.r(__webpack_exports__);
         category: product.category_id,
         subcategory: product.subcategory_id,
         item: product.id,
-        unitprice: 900,
-        totalprice: 900
+        unitprice: product.price
       }).then(function (response) {
         console.log(response);
 
@@ -1960,6 +1973,21 @@ __webpack_require__.r(__webpack_exports__);
         _this5.pos = response.data.data;
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    calculatePrice: function calculatePrice(price) {
+      this.totalPrice = this.qty * price;
+      return totalPrice;
+    },
+    //checkout
+    setData: function setData() {
+      axios.post('api/temppos', {
+        category: product.category_id,
+        subcategory: product.subcategory_id,
+        item: product.id,
+        customer: product.id,
+        unitprice: product.price,
+        totalprice: 900
       });
     }
   }
@@ -6424,7 +6452,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ndiv.gallery[data-v-175167d8] {\n  margin: 5px;\n  border: 1px solid #ccc;\n  float: left;\n  width: 150px;\n}\ndiv.gallery[data-v-175167d8]:hover {\n  border: 1px solid #777;\n}\ndiv.gallery img[data-v-175167d8] {\n  width: 100%;\n  height: auto;\n}\ndiv.desc[data-v-175167d8] {\n  padding: 15px;\n  text-align: center;\n}\n    \n", ""]);
+exports.push([module.i, "\ninput[data-v-175167d8] {\n  width: 50px;\n}\ndiv.gallery[data-v-175167d8] {\n  margin: 5px;\n  border: 1px solid #ccc;\n  float: left;\n  width: 150px;\n}\ndiv.gallery[data-v-175167d8]:hover {\n  border: 1px solid #777;\n}\ndiv.gallery img[data-v-175167d8] {\n  width: 100%;\n  height: auto;\n}\ndiv.desc[data-v-175167d8] {\n  padding: 15px;\n  text-align: center;\n}\n    \n", ""]);
 
 // exports
 
@@ -37933,9 +37961,11 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-4" }, [
-        _c("div", { staticClass: "pos-secti" }, [
+        _c("div", { staticClass: "pos-section" }, [
+          _vm._m(0),
+          _vm._v(" "),
           _c("table", { staticClass: "table table-bordered" }, [
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "tbody",
@@ -37945,16 +37975,42 @@ var render = function() {
                     _vm._v(_vm._s(data.item))
                   ]),
                   _vm._v(" "),
-                  _vm._m(1, true),
+                  _c("td", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.qty,
+                          expression: "qty"
+                        }
+                      ],
+                      attrs: { type: "number" },
+                      domProps: { value: _vm.qty },
+                      on: {
+                        change: function($event) {
+                          return _vm.calculatePrice(data.unitprice)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.qty = $event.target.value
+                        }
+                      }
+                    })
+                  ]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(data.unitprice))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(data.totalprice))])
+                  _c("td", [_vm._v(_vm._s(_vm.totalPrice))])
                 ])
               }),
               0
             )
-          ])
+          ]),
+          _vm._v(" "),
+          _vm._m(2)
         ])
       ]),
       _vm._v(" "),
@@ -38007,36 +38063,56 @@ var render = function() {
             )
           ]),
           _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col-md-8" },
-            _vm._l(_vm.products, function(item, index) {
-              return _c("div", { key: index, staticClass: "card" }, [
-                _c("img", {
-                  staticClass: "card-img-top",
-                  attrs: { src: "img/1.jpg", alt: "" },
-                  on: {
-                    click: function($event) {
-                      return _vm.setpos(item)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(item.name))
+          _c("div", { staticClass: "col-md-8" }, [
+            _c(
+              "div",
+              { staticClass: "row" },
+              _vm._l(_vm.products, function(item, index) {
+                return _c("div", { key: index, staticClass: "col-md-4" }, [
+                  _c("div", { staticClass: "card" }, [
+                    _c("img", {
+                      staticClass: "card-img-top",
+                      attrs: {
+                        src: "/storage/cover_images/" + item.cover,
+                        alt: ""
+                      },
+                      on: {
+                        click: function($event) {
+                          return _vm.setpos(item)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(item.name))
+                      ])
+                    ])
                   ])
                 ])
-              ])
-            }),
-            0
-          )
+              }),
+              0
+            )
+          ])
         ])
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", [_vm._v("Customer")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", name: "customer" }
+      })
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -38057,7 +38133,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("input", { attrs: { type: "text" } })])
+    return _c("div", { staticClass: "form-group" }, [
+      _c("input", {
+        staticClass: "btn btn-primary",
+        attrs: { type: "Button", name: "submit", value: "Checkout" }
+      })
+    ])
   }
 ]
 render._withStripped = true

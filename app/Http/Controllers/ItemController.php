@@ -41,16 +41,35 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'price' => 'required',
+            'cover' => 'image|nullable|max:1999'
         ]);
 
+        
+       //Handle File Upload
+       if ($request->hasFile('cover')) {
+        //Get filename with the extension
+        $filenameWithExt = $request->file('cover')
+            ->getClientOriginalName();
+        //Get just filename
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        //Get just ext
+        $extension = $request->file('cover')->getClientOriginalExtension();
+        //Filename to store
+        $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+        //Upload image
+        $path = $request->file('cover')->storeAs('public/cover_images', $fileNameToStore);
+        } else {
+        $fileNameToStore = 'noimage.jpg';
+        }
        
         $item = new Item;
         $item->category_id = $request->input('category_id');
         $item->subcategory_id = $request->input('subcategory_id');
         $item->name = $request->input('name');
         $item->price = $request->input('price');
-        $item->cover = $request->input('cover');
+        $item->cover = $fileNameToStore;
         $item->save();
 
         return redirect(route('item.index'));
@@ -92,15 +111,34 @@ class ItemController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'price' => 'required',
+            'cover' => 'image|nullable|max:1999'
         ]);
+
+          //Handle File Upload
+          if ($request->hasFile('cover')) {
+            //Get filename with the extension
+            $filenameWithExt = $request->file('cover')
+                ->getClientOriginalName();
+            //Get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //Get just ext
+            $extension = $request->file('cover')->getClientOriginalExtension();
+            //Filename to store
+            $fileNameToStore = $filename . '_' . time() . '.' . $extension;
+            //Upload image
+            $path = $request->file('cover')->storeAs('public/cover_images', $fileNameToStore);
+        }
 
         $item = Item::find($id);
         $item->category_id = $request->input('category_id');
         $item->subcategory_id = $request->input('subcategory_id');
         $item->name = $request->input('name');
         $item->price = $request->input('price');
-        $item->cover = $request->input('cover');
+        if ($request->hasFile('cover')) {
+            $category->cover = $fileNameToStore;
+        }
         $item->save();
     }
 

@@ -14,9 +14,6 @@ class TempposResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'item' => $this->item->name,
-            'unitprice'=> $this->item->price
-        ];
+        return parent::toArray($request);
     }
 }
